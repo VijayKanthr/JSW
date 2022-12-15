@@ -29,7 +29,7 @@ public class BatchJobServiceImpl implements BatchJobService{
 
         BatchJobInstance batchJobInstance =  BatchJobInstance.builder()
                         .schedulerJobId(batchJob.getId())
-                        .schedulerJobName((BatchJob.ADD_CUSTOMERS_JOB))
+                        .schedulerJobName(BatchJob.valueOf((batchJob.name())))
                         .status(BatchJobStatus.EXECUTING)
                         .startTime(Instant.now())
                          .launchDate(LocalDateTime.now().toString() )

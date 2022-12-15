@@ -28,7 +28,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
-public class BatchJob {
+public class BatchJobConfig {
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;

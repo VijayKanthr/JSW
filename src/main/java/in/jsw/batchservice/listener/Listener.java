@@ -13,7 +13,7 @@ public class Listener {
     @OnSkipInRead
     public void skipInRead(Throwable th) {
         if(th instanceof FlatFileParseException) {
-            createFile("src/main/resources/SkipInRead.txt",
+            createFile("src/main/resources/SkipInRead.csv",
                     ((FlatFileParseException) th).getInput());
         }
     }
