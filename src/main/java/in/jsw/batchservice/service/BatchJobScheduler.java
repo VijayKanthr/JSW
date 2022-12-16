@@ -31,7 +31,7 @@ public class BatchJobScheduler {
     @Autowired
     BatchJobService batchJobService;
 
-    private static Logger logger = LoggerFactory.getLogger(BatchJobScheduler.class);
+    private static final Logger logger = LoggerFactory.getLogger(BatchJobScheduler.class);
 
     //@Scheduled(cron = "0 0/1 * 1/1 * ?")
     public void secondJobStarter() {

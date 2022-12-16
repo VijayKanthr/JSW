@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class ColumnRangePartitioner implements Partitioner {
 
-    private static Logger logger = LoggerFactory.getLogger(ColumnRangePartitioner.class);
+    private static final Logger logger = LoggerFactory.getLogger(ColumnRangePartitioner.class);
 
     @Override
     public Map<String, ExecutionContext> partition(int gridSize) {//4

@@ -37,7 +37,7 @@ public class JobService {
 
 
 
-    private static Logger logger = LoggerFactory.getLogger(JobService.class);
+    private static final Logger logger = LoggerFactory.getLogger(JobService.class);
 
     @Async
     public void startJob(String jobName, List<JobParamsRequest> JobParamsRequestList) {
@@ -60,7 +60,8 @@ public class JobService {
             if(jobName.equals("readCSV Job")) {
                 timer.start();
                 triggeredByOrJobId = BatchJob.IMPORT_CUSTOMERS_CSV_DB.getId();
-                // Create an instance of BatchJob for Audit and isRunning() check
+
+                // Create an instance of BatchJob for Audit
                 batchJobInstance = batchJobService.createJobInstance(
                                 BatchJob.IMPORT_CUSTOMERS_CSV_DB, triggeredByOrJobId);
 
@@ -82,7 +83,7 @@ public class JobService {
             }
             logger.info("Job Execution ID = " + jobExecution.getId());
         }catch(Exception e) {
-            logger.error("Exception while starting job");
+            logger.error("Exception while starting job  :  " + e.getMessage());
         }
     }
 
