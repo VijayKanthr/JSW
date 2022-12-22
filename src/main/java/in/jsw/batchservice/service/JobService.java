@@ -57,7 +57,7 @@ public class JobService {
 
         try {
             JobExecution jobExecution = null;
-            if(jobName.equals("readCSV Job")) {
+            if(jobName.equals("readCsv")) {
                 timer.start();
                 triggeredByOrJobId = BatchJob.IMPORT_CUSTOMERS_CSV_DB.getId();
 
