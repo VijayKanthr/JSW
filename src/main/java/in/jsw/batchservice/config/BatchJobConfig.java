@@ -27,6 +27,8 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import javax.persistence.EntityManager;
+
 @Configuration
 public class BatchJobConfig {
 
@@ -46,6 +48,9 @@ public class BatchJobConfig {
     private FirstItemWriter firstItemWriter;
 
     @Autowired
+    private EntityManager entityManager;
+
+@Autowired
     CustomWriter customWriter;
 
     @Autowired
@@ -115,7 +120,7 @@ public class BatchJobConfig {
     @Bean
     public PartitionHandler partitionHandler() {
         TaskExecutorPartitionHandler taskExecutorPartitionHandler = new TaskExecutorPartitionHandler();
-        taskExecutorPartitionHandler.setGridSize(2);
+        taskExecutorPartitionHandler.setGridSize(2); //
         taskExecutorPartitionHandler.setTaskExecutor(taskExecutor());
         taskExecutorPartitionHandler.setStep(slaveStep());
         return taskExecutorPartitionHandler;
@@ -178,6 +183,8 @@ public class BatchJobConfig {
         flatFileItemReader.setLinesToSkip(1);
         return flatFileItemReader;
     }
+
+
 
 
 

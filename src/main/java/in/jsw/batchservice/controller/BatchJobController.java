@@ -1,6 +1,7 @@
 package in.jsw.batchservice.controller;
 
 import in.jsw.batchservice.model.customer.JobParamsRequest;
+import in.jsw.batchservice.service.BatchJobScheduler;
 import in.jsw.batchservice.service.JobService;
 import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class BatchJobController {
     @Autowired
     JobOperator jobOperator;
 
+     @Autowired
+     BatchJobScheduler batchJobScheduler;
+
     @PostMapping("/start/{jobName}")
     public ResponseEntity<String> startJob(@PathVariable String jobName,
                                            @RequestBody List<JobParamsRequest> JobParamsRequestList) throws Exception {
@@ -33,6 +37,14 @@ public class BatchJobController {
             e.printStackTrace();
         }
         return ResponseEntity.ok("Job Stopped..");
+    }
+
+
+    @PostMapping("/start/batch-job/{jobName}")
+    public ResponseEntity<String> startBatchJob(@PathVariable String jobName,
+                                           @RequestBody List<JobParamsRequest> JobParamsRequestList) throws Exception {
+        batchJobScheduler.secondJobStarter(jobName,JobParamsRequestList);
+        return ResponseEntity.ok("Job Started..");
     }
 
 }

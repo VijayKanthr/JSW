@@ -35,6 +35,9 @@ public class JobService {
     @Autowired
     BatchJobService batchJobService;
 
+    @Autowired
+    BatchJobHelper batchJobHelper;
+
 
 
     private static final Logger logger = LoggerFactory.getLogger(JobService.class);
@@ -58,7 +61,14 @@ public class JobService {
         try {
             JobExecution jobExecution = null;
             if(jobName.equals("readCsv")) {
-                timer.start();
+
+                // TODO: 22-12-2022 need to add helper class here
+
+
+                 batchJobHelper.create_updateJobInstance(readCSVJob ,BatchJob.IMPORT_CUSTOMERS_CSV_DB,jobParameters);
+
+
+              /*  timer.start();
                 triggeredByOrJobId = BatchJob.IMPORT_CUSTOMERS_CSV_DB.getId();
 
                 // Create an instance of BatchJob for Audit
@@ -80,8 +90,9 @@ public class JobService {
                         "BatchJob: schedulerJobName={} completed successfully, executionTime={} seconds",
                         BatchJob.IMPORT_CUSTOMERS_CSV_DB.name(),
                         timer.getTotalTimeSeconds());
+            }*/
             }
-            logger.info("Job Execution ID = " + jobExecution.getId());
+            //logger.info("Job Execution ID = " + jobExecution.getId());
         }catch(Exception e) {
             logger.error("Exception while starting job  :  " + e.getMessage());
         }
