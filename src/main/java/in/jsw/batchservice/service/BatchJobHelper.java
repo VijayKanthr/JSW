@@ -3,12 +3,10 @@ package in.jsw.batchservice.service;
 import in.jsw.batchservice.batch.BatchJob;
 import in.jsw.batchservice.batch.BatchJobStatus;
 import in.jsw.batchservice.model.batch.BatchJobInstance;
-import in.jsw.batchservice.model.customer.JobParamsRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,66 +15,61 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-@Service
-public class BatchJobScheduler {
+@Component
+public class BatchJobHelper {
+
 
     @Autowired
     JobLauncher jobLauncher;
 
     @Autowired
-    Job launchJob;
-
-    @Autowired
     BatchJobService batchJobService;
 
-    @Autowired
-    BatchJobHelper batchJobHelper;
+    private static final Logger logger = LoggerFactory.getLogger(JobService.class);
 
-    private static final Logger logger = LoggerFactory.getLogger(BatchJobScheduler.class);
-
-    //@Scheduled(cron = "0 0/1 * 1/1 * ?")
-    public void secondJobStarter(String jobName, List<JobParamsRequest> jobParamsRequestList) {
-        Map<String, JobParameter> params = new HashMap<>();
-        params.put("currentTime", new JobParameter(System.currentTimeMillis()));
-
-        JobParameters jobParameters = new JobParameters(params);
+    public void create_updateJobInstance(Job jobName, BatchJob batchJob, JobParameters jobParameters) {
 
         BatchJobInstance batchJobInstance = null;
+
         long count = 0;
         StopWatch timer = new StopWatch();
         Long triggeredByOrJobId = 0L;
+
         try {
 
-            batchJobHelper.create_updateJobInstance(launchJob ,BatchJob.ADD_CUSTOMERS_JOB,jobParameters);
+            JobExecution jobExecution = null;
 
-          /* timer.start();
-            batchJobInstance= batchJobService.createJobInstance(BatchJob.ADD_CUSTOMERS_JOB,90L);
+            timer.start();
+            triggeredByOrJobId = batchJob.getId();
 
-            JobExecution jobExecution =
-                    jobLauncher.run(launchJob, jobParameters);
+            // Create an instance of BatchJob for Audit
+            batchJobInstance = batchJobService.createJobInstance(
+                    batchJob, triggeredByOrJobId);
+
+            jobExecution = jobLauncher.run(jobName, jobParameters);
+
             logger.info("Job Execution ID = " + jobExecution.getId());
             logger.info(
                     "BatchJob: schedulerJobName={} started on launchDate={} with parameters={}",
-                    BatchJob.ADD_CUSTOMERS_JOB.name(),
+                    batchJob,
                     Instant.now().toString(),
                     jobParameters);
             timer.stop();
+
             batchJobService.updateJobInstance(batchJobInstance, BatchJobStatus.COMPLETED,
-                    timer.getTotalTimeMillis(),count,"ADD CUSTOMERS FROM CSV TO DB COMPLETED.");
+                    timer.getTotalTimeMillis(),count,"JOB COMPLETED.");
             logger.info(
                     "BatchJob: schedulerJobName={} completed successfully, executionTime={} seconds",
-                    BatchJob.ADD_CUSTOMERS_JOB.name(),
-                    timer.getTotalTimeSeconds());*/
+                   batchJob,
+                    timer.getTotalTimeSeconds());
 
+             logger.info("Job Execution ID = " + jobExecution.getId());
 
-
-        }catch(Exception e) {
+        }
+        catch (Exception e){
             logger.error("Exception while starting job  :  " + e.getMessage());
         }
-    }
 
+    }
 }

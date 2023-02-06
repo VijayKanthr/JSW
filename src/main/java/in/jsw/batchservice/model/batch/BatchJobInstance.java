@@ -26,9 +26,11 @@ public class BatchJobInstance {
     @Column(name = "scheduler_job_id")
     private Long schedulerJobId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "scheduler_job_name")
     private BatchJob schedulerJobName;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private BatchJobStatus status;
 

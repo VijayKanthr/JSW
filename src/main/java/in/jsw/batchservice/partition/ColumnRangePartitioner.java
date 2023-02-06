@@ -1,5 +1,8 @@
 package in.jsw.batchservice.partition;
 
+import in.jsw.batchservice.service.JobService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.partition.support.Partitioner;
 import org.springframework.batch.item.ExecutionContext;
 
@@ -8,12 +11,14 @@ import java.util.Map;
 
 public class ColumnRangePartitioner implements Partitioner {
 
+    private static final Logger logger = LoggerFactory.getLogger(ColumnRangePartitioner.class);
+
     @Override
     public Map<String, ExecutionContext> partition(int gridSize) {//4
         int min = 1;
         int max = 1000;
         int targetSize = (max - min) / gridSize + 1;//250
-        System.out.println("targetSize : " + targetSize);
+        logger.info("targetSize = " + targetSize);
         Map<String, ExecutionContext> result = new HashMap<>();
 
         int number = 0;
@@ -34,7 +39,7 @@ public class ColumnRangePartitioner implements Partitioner {
             end += targetSize;
             number++;
         }
-        System.out.println("partition result:" + result.toString());
+        logger.info("partition result: = " + result.toString());
         return result;
     }
 }
